@@ -38,7 +38,12 @@ export const MARKET_ANALYSIS_RESPONSE_SCHEMA = {
     'pricingAnalysis',
     'competitorAssessment',
     'marketAnalysis',
-    'recommendation'
+    'recommendation',
+    'swotAnalysis',
+    'financialProjections',
+    'riskAssessment',
+    'marketingPlaybook',
+    'implementationRoadmap'
   ],
   properties: {
     overallScore: {
@@ -123,6 +128,67 @@ export const MARKET_ANALYSIS_RESPONSE_SCHEMA = {
           items: { type: 'string' }
         }
       }
+    },
+    swotAnalysis: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['strengths', 'weaknesses', 'opportunities', 'threats'],
+      properties: {
+        strengths: { type: 'array', items: { type: 'string' } },
+        weaknesses: { type: 'array', items: { type: 'string' } },
+        opportunities: { type: 'array', items: { type: 'string' } },
+        threats: { type: 'array', items: { type: 'string' } }
+      }
+    },
+    financialProjections: {
+      type: 'object',
+      additionalProperties: false,
+      required: ['capexRange', 'opexRange', 'estimatedBreakEven', 'description'],
+      properties: {
+        capexRange: { type: 'string' },
+        opexRange: { type: 'string' },
+        estimatedBreakEven: { type: 'string' },
+        description: { type: 'string' }
+      }
+    },
+    riskAssessment: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['riskCategory', 'riskDescription', 'mitigationStrategy'],
+        properties: {
+          riskCategory: { type: 'string' },
+          riskDescription: { type: 'string' },
+          mitigationStrategy: { type: 'string' }
+        }
+      }
+    },
+    marketingPlaybook: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['targetAudience', 'channel', 'tacticDescription'],
+        properties: {
+          targetAudience: { type: 'string' },
+          channel: { type: 'string' },
+          tacticDescription: { type: 'string' }
+        }
+      }
+    },
+    implementationRoadmap: {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        required: ['phaseName', 'timelineEstimate', 'keyTasks'],
+        properties: {
+          phaseName: { type: 'string' },
+          timelineEstimate: { type: 'string' },
+          keyTasks: { type: 'array', items: { type: 'string' } }
+        }
+      }
     }
   }
 };
@@ -187,7 +253,14 @@ REQUIRED ANALYSES:
 - opportunityAnalysis: How does demand compare to competitive pressure? Is this a contested market or an underserved opportunity?
 - audienceInsights: Which audience categories are most significant? How do they relate to the target customer?
 - competitorInsights: Key competitive dynamics, standout threats, and exploitable weaknesses across the competitor set.
-- pricingAnalysis: Compare competitors' pricing levels and pricing ranges. Identify pricing patterns (e.g. premium clusters vs budget segments), highlight pricing sweet spots, and suggest strategic positioning/pricing advice for a new entrant.
+- pricingAnalysis: Compare competitors' pricing levels and pricing ranges. Identify pricing patterns (e.g. premium clusters vs budget segments), highlight pricing sweet spots, and suggest strategic pricing advice/ranges for a new entrant.
+
+PREMIUM BUSINESS STRATEGY:
+- swotAnalysis: Provide a localized SWOT analysis. Include at least 3-4 distinct points for each category (strengths, weaknesses, opportunities, threats) specific to opening a business in this location and niche.
+- financialProjections: Provide initial setup capital range (capexRange), monthly operating cost range (opexRange), break-even timeline estimate (estimatedBreakEven), and a detailed description/justification (description) explaining these estimates based on local competitor scale and local market factors.
+- riskAssessment: Provide 3-4 major risks (riskCategory, riskDescription) along with actionable mitigation tactics (mitigationStrategy).
+- marketingPlaybook: Outline 3-4 local marketing tactics (targetAudience, channel, tacticDescription) targeting the audience categories defined.
+- implementationRoadmap: Outline a structured 4-phase launch roadmap (Phase 1 to 4) detailing the phaseName, timelineEstimate, and 3 keyTasks for each phase to guide the entrepreneur from setup to growth.
 
 Return valid JSON only.
 

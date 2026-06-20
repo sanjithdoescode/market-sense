@@ -9,6 +9,38 @@ import { applyServerGrade } from '../utils/scoreCalculator.js';
 
 const stringArraySchema = z.array(z.string()).default([]);
 
+const swotAnalysisSchema = z.object({
+  strengths: stringArraySchema,
+  weaknesses: stringArraySchema,
+  opportunities: stringArraySchema,
+  threats: stringArraySchema
+});
+
+const financialProjectionsSchema = z.object({
+  capexRange: z.string().default('N/A'),
+  opexRange: z.string().default('N/A'),
+  estimatedBreakEven: z.string().default('N/A'),
+  description: z.string().default('')
+});
+
+const riskAssessmentItemSchema = z.object({
+  riskCategory: z.string().default(''),
+  riskDescription: z.string().default(''),
+  mitigationStrategy: z.string().default('')
+});
+
+const marketingPlaybookItemSchema = z.object({
+  targetAudience: z.string().default(''),
+  channel: z.string().default(''),
+  tacticDescription: z.string().default('')
+});
+
+const implementationRoadmapItemSchema = z.object({
+  phaseName: z.string().default(''),
+  timelineEstimate: z.string().default(''),
+  keyTasks: stringArraySchema
+});
+
 const marketAnalysisResultSchema = z.object({
   overallScore: z.number(),
   grade: z.string(),
@@ -22,6 +54,13 @@ const marketAnalysisResultSchema = z.object({
   audienceInsights: z.string().default(''),
   competitorInsights: z.string().default(''),
   pricingAnalysis: z.string().default(''),
+
+  // Premium Strategic Playbook fields
+  swotAnalysis: swotAnalysisSchema.default({ strengths: [], weaknesses: [], opportunities: [], threats: [] }),
+  financialProjections: financialProjectionsSchema.default({ capexRange: 'N/A', opexRange: 'N/A', estimatedBreakEven: 'N/A', description: '' }),
+  riskAssessment: z.array(riskAssessmentItemSchema).default([]),
+  marketingPlaybook: z.array(marketingPlaybookItemSchema).default([]),
+  implementationRoadmap: z.array(implementationRoadmapItemSchema).default([]),
 
   competitorAssessment: z.array(
     z.object({

@@ -7,6 +7,7 @@ import DemandSignalPanel from '../components/DemandSignalPanel.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import RecommendationPanel from '../components/RecommendationPanel.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
+import StrategicPlaybookPanel from '../components/StrategicPlaybookPanel.jsx';
 import { useAnalysis } from '../hooks/useAnalysis.js';
 
 function AnalysisResult() {
@@ -102,6 +103,15 @@ function AnalysisResult() {
         audienceInsights={analysis.audienceInsights}
         competitorInsights={analysis.competitorInsights}
         pricingAnalysis={analysis.pricingAnalysis}
+      />
+
+      {/* Premium Strategic Business Playbook */}
+      <StrategicPlaybookPanel
+        swotAnalysis={analysis.swotAnalysis}
+        financialProjections={analysis.financialProjections}
+        riskAssessment={analysis.riskAssessment}
+        marketingPlaybook={analysis.marketingPlaybook}
+        implementationRoadmap={analysis.implementationRoadmap}
       />
 
       {/* Competitor table */}

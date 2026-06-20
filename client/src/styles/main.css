@@ -2574,4 +2574,508 @@ h3 {
   }
 }
 
+/* ── Strategic Business Playbook Styles ─────────────────────────── */
+.strategic-playbook-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(251, 191, 36, 0.08);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--amber);
+  animation: pulse-glow 3s infinite var(--ease-out);
+}
+
+.playbook-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.playbook-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 16px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.playbook-tab:hover {
+  color: var(--ink);
+  background: var(--surface-2);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.playbook-tab.active {
+  color: var(--ink);
+  background: var(--surface-3);
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.playbook-content {
+  min-height: 200px;
+}
+
+/* SWOT Matrix Layout */
+.swot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.swot-box {
+  background: var(--panel-soft);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: transform var(--duration) var(--ease-out),
+              box-shadow var(--duration) var(--ease-out),
+              border-color var(--duration) var(--ease-out);
+}
+
+.swot-box:hover {
+  transform: translateY(-2px);
+}
+
+.swot-box h3 {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+}
+
+.swot-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 0.75rem;
+  margin-right: 6px;
+}
+
+.swot-box ul {
+  margin: 0;
+  padding: 0 0 0 18px;
+}
+
+.swot-box li {
+  margin-bottom: 10px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.swot-box li:last-child {
+  margin-bottom: 0;
+}
+
+/* SWOT color variants */
+.swot-strengths {
+  border-left: 4px solid var(--green);
+}
+.swot-strengths:hover {
+  border-color: var(--green);
+  box-shadow: 0 8px 24px rgba(52, 211, 153, 0.05);
+}
+.swot-strengths .swot-indicator {
+  background: rgba(52, 211, 153, 0.15);
+  color: var(--green);
+}
+
+.swot-weaknesses {
+  border-left: 4px solid var(--red);
+}
+.swot-weaknesses:hover {
+  border-color: var(--red);
+  box-shadow: 0 8px 24px rgba(248, 113, 113, 0.05);
+}
+.swot-weaknesses .swot-indicator {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--red);
+}
+
+.swot-opportunities {
+  border-left: 4px solid var(--blue);
+}
+.swot-opportunities:hover {
+  border-color: var(--blue);
+  box-shadow: 0 8px 24px rgba(96, 165, 250, 0.05);
+}
+.swot-opportunities .swot-indicator {
+  background: rgba(96, 165, 250, 0.15);
+  color: var(--blue);
+}
+
+.swot-threats {
+  border-left: 4px solid var(--orange);
+}
+.swot-threats:hover {
+  border-color: var(--orange);
+  box-shadow: 0 8px 24px rgba(251, 146, 60, 0.05);
+}
+.swot-threats .swot-indicator {
+  background: rgba(251, 146, 60, 0.15);
+  color: var(--orange);
+}
+
+/* Roadmap Flow */
+.roadmap-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 10px 0;
+}
+
+.roadmap-step {
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 16px;
+}
+
+.roadmap-marker {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.roadmap-node {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  border: 2px solid var(--accent-dim);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 0.85rem;
+  z-index: 2;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.roadmap-line {
+  width: 2px;
+  flex: 1;
+  background: linear-gradient(180deg, var(--accent-dim) 0%, var(--border) 100%);
+  margin: 4px 0;
+}
+
+.roadmap-details {
+  background: var(--panel-soft);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 20px;
+}
+
+.roadmap-phase-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 10px;
+}
+
+.roadmap-phase-header h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.roadmap-timeline-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.roadmap-tasks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
+
+.roadmap-tasks li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.roadmap-tasks li .task-check {
+  color: var(--accent);
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+
+/* Financials view */
+.financials-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cost-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.cost-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.cost-card:hover {
+  background: var(--surface-3);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+}
+
+.cost-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.cost-amount {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--ink);
+  font-family: var(--font-display);
+}
+
+.cost-note {
+  font-size: 0.75rem;
+  color: var(--text-subtle);
+  margin: 0;
+}
+
+.cost-card.capex {
+  border-top: 3px solid var(--teal);
+}
+.cost-card.opex {
+  border-top: 3px solid var(--purple);
+}
+.cost-card.breakeven {
+  border-top: 3px solid var(--amber);
+}
+
+.financials-rationale {
+  background: var(--panel-soft);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.financials-rationale h5 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.financials-rationale p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* Risks view */
+.risks-view {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.risks-list {
+  display: grid;
+  gap: 16px;
+}
+
+.risk-item {
+  background: var(--panel-soft);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: border-color var(--duration) var(--ease-out);
+}
+
+.risk-item:hover {
+  border-color: rgba(248, 113, 113, 0.2);
+}
+
+.risk-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.risk-header h4 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.risk-warning-icon {
+  color: var(--red);
+  opacity: 0.85;
+}
+
+.risk-desc {
+  margin: 0 0 14px;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.risk-mitigation {
+  background: rgba(52, 211, 153, 0.03);
+  border: 1px dashed rgba(52, 211, 153, 0.15);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mitigation-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mitigation-text {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Marketing Playbook view */
+.marketing-view {
+  display: flex;
+  flex-direction: column;
+}
+
+.marketing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.marketing-card {
+  background: var(--panel-soft);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: all var(--duration) var(--ease-out);
+}
+
+.marketing-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-hover);
+}
+
+.marketing-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.audience-tag {
+  background: rgba(96, 165, 250, 0.1);
+  color: var(--blue);
+  border: 1px solid rgba(96, 165, 250, 0.2);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.channel-badge {
+  display: inline-flex;
+  align-items: center;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.marketing-card h5 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 8px;
+}
+
+.marketing-card p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 

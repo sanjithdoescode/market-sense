@@ -75,6 +75,13 @@ const analysisSchema = new mongoose.Schema(
     audienceInsights: { type: String, default: null },
     competitorInsights: { type: String, default: null },
     pricingAnalysis: { type: String, default: null },
+    
+    // ── Premium Strategic Playbook fields ──────────────────────────────
+    swotAnalysis: { type: mongoose.Schema.Types.Mixed, default: null },
+    financialProjections: { type: mongoose.Schema.Types.Mixed, default: null },
+    riskAssessment: { type: mongoose.Schema.Types.Mixed, default: null },
+    marketingPlaybook: { type: mongoose.Schema.Types.Mixed, default: null },
+    implementationRoadmap: { type: mongoose.Schema.Types.Mixed, default: null },
 
     rawAiResponse: { type: mongoose.Schema.Types.Mixed },
     analysisMetadata: { type: mongoose.Schema.Types.Mixed }

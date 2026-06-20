@@ -96,7 +96,13 @@ export function formatAnalysisDocument(document) {
       opportunityAnalysis: analysis.opportunityAnalysis ?? null,
       audienceInsights: analysis.audienceInsights ?? null,
       competitorInsights: analysis.competitorInsights ?? null,
-      pricingAnalysis: analysis.pricingAnalysis ?? null
+      pricingAnalysis: analysis.pricingAnalysis ?? null,
+      // Premium Strategic Playbook
+      swotAnalysis: analysis.swotAnalysis ?? null,
+      financialProjections: analysis.financialProjections ?? null,
+      riskAssessment: analysis.riskAssessment ?? [],
+      marketingPlaybook: analysis.marketingPlaybook ?? [],
+      implementationRoadmap: analysis.implementationRoadmap ?? []
     },
     // Demand Signal Engine
     demandScore: analysis.demandScore ?? null,
