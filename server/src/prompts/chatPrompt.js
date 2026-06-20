@@ -19,7 +19,13 @@ export function buildChatSystemPrompt(analysis) {
     audienceInsights = '',
     competitorInsights = '',
     pricingAnalysis = '',
-    competitorAssessment = []
+    competitorAssessment = [],
+    // Premium Strategic Playbook fields
+    swotAnalysis = null,
+    financialProjections = null,
+    riskAssessment = [],
+    marketingPlaybook = [],
+    implementationRoadmap = []
   } = analysis;
 
   const competitorsSummary = competitors.map(c => {
@@ -34,6 +40,32 @@ export function buildChatSystemPrompt(analysis) {
   const demandSignalsList = demandSignals?.signals?.length > 0
     ? demandSignals.signals.map(s => `- **${s.category}**: ${s.count} places found (closest: ${s.closestDistanceMeters !== null ? s.closestDistanceMeters + 'm' : 'N/A'}, avg rating: ${s.averageRating ?? 'N/A'})`).join('\n')
     : 'No demand signal data.';
+
+  const swotSummary = swotAnalysis
+    ? `  * Strengths: ${(swotAnalysis.strengths || []).join(', ') || 'None'}
+  * Weaknesses: ${(swotAnalysis.weaknesses || []).join(', ') || 'None'}
+  * Opportunities: ${(swotAnalysis.opportunities || []).join(', ') || 'None'}
+  * Threats: ${(swotAnalysis.threats || []).join(', ') || 'None'}`
+    : 'None';
+
+  const financialsSummary = financialProjections
+    ? `  * Initial Capital (CapEx): ${financialProjections.capexRange || 'N/A'}
+  * Monthly Operating (OpEx): ${financialProjections.opexRange || 'N/A'}
+  * Break-Even: ${financialProjections.estimatedBreakEven || 'N/A'}
+  * Rationale: ${financialProjections.description || 'None'}`
+    : 'None';
+
+  const risksSummary = riskAssessment?.length > 0
+    ? riskAssessment.map(r => `  * ${r.riskCategory}: ${r.riskDescription} (Mitigation: ${r.mitigationStrategy})`).join('\n')
+    : 'None';
+
+  const marketingSummary = marketingPlaybook?.length > 0
+    ? marketingPlaybook.map(m => `  * Target: ${m.targetAudience} | Channel: ${m.channel} | Tactic: ${m.tacticDescription}`).join('\n')
+    : 'None';
+
+  const roadmapSummary = implementationRoadmap?.length > 0
+    ? implementationRoadmap.map(phase => `  * ${phase.phaseName} (Timeline: ${phase.timelineEstimate}): ${(phase.keyTasks || []).join(', ')}`).join('\n')
+    : 'None';
 
   return `You are a professional Market Analyst, Business Consultant, and Location Strategist chatbot.
 You have been provided with the following comprehensive Market Analysis Report for a target business concept in a specific location.
@@ -67,6 +99,18 @@ Recommendations:
 ${(recommendation?.reasoning || []).map(r => `  * ${r}`).join('\n') || '  * N/A'}
 - Suggested Positioning:
 ${(recommendation?.suggestedPositioning || []).map(p => `  * ${p}`).join('\n') || '  * N/A'}
+
+Strategic Business Playbook:
+- SWOT Analysis:
+${swotSummary}
+- Financial Estimates:
+${financialsSummary}
+- Risk Assessment:
+${risksSummary}
+- Marketing Channels:
+${marketingSummary}
+- Launch Roadmap Timeline:
+${roadmapSummary}
 
 Audience Profile Categories:
 ${audienceCategories.join(', ') || 'None'}
