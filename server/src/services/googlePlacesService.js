@@ -188,14 +188,22 @@ export async function nearbySearch({
   let resolvedSearchType = searchType;
   let resolvedKeyword;
 
-  if (searchType) {
-    if (VALID_GOOGLE_PLACE_TYPES.has(searchType)) {
+  // Auto-resolve businessType to searchType if it matches a valid Google Place Type
+  if (!resolvedSearchType && businessType) {
+    const normalizedType = businessType.toLowerCase().trim().replace(/\s+/g, '_');
+    if (VALID_GOOGLE_PLACE_TYPES.has(normalizedType)) {
+      resolvedSearchType = normalizedType;
+    }
+  }
+
+  if (resolvedSearchType) {
+    if (VALID_GOOGLE_PLACE_TYPES.has(resolvedSearchType)) {
       resolvedKeyword = undefined;
     } else {
       console.warn(
-        `[googlePlacesService] Unrecognized Google Place Type "${searchType}". Falling back to keyword search.`
+        `[googlePlacesService] Unrecognized Google Place Type "${resolvedSearchType}". Falling back to keyword search.`
       );
-      resolvedKeyword = searchType;
+      resolvedKeyword = resolvedSearchType;
       resolvedSearchType = undefined;
     }
   } else {
