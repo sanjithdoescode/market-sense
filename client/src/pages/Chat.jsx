@@ -114,7 +114,7 @@ function TypingIndicator() {
   return (
     <div className="chat-typing-indicator">
       <div className="typing-avatar">
-        <Sparkles size={14} />
+        <img src="/images/mistral.png" alt="AI" className="ai-avatar-img" draggable="false" />
       </div>
       <div className="typing-dots">
         <span /><span /><span />
@@ -421,7 +421,7 @@ function Chat() {
           {isEmptyState && (
             <div className="welcome-state">
               <div className="welcome-orb">
-                <Sparkles size={28} />
+                <img src="/images/mistral.png" alt="Mistral AI" className="welcome-logo-img" draggable="false" />
               </div>
               <h2 className="welcome-heading">How can I help you today?</h2>
               <p className="welcome-sub">Ask about competitor densities, pricing sweet spots, or brainstorm startup locations.</p>
@@ -445,7 +445,7 @@ function Chat() {
             >
               {msg.role === 'assistant' ? (
                 <div className="msg-avatar msg-avatar--ai">
-                  <Sparkles size={14} />
+                  <img src="/images/mistral.png" alt="AI" className="ai-avatar-img" draggable="false" />
                 </div>
               ) : (
                 <div className="msg-avatar msg-avatar--user">
@@ -479,7 +479,7 @@ function Chat() {
         <footer className="chat-footer-v2">
           <ChatInput onSend={handleSend} loading={loading} placeholder={placeholder} />
           <p className="chat-disclaimer-v2">
-            MarketSite AI may generate inaccurate insights. Cross-reference competitor details independently.
+            MarketSite AI may generate inaccurate insights. Cross-reference competitor details independently. This bot is powered by Mistral AI but is not an official product of Mistral AI.
           </p>
         </footer>
       </main>

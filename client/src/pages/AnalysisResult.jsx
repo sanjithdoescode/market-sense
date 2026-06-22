@@ -8,6 +8,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import RecommendationPanel from '../components/RecommendationPanel.jsx';
 import ScoreCard from '../components/ScoreCard.jsx';
 import StrategicPlaybookPanel from '../components/StrategicPlaybookPanel.jsx';
+import LiquidGlass from '../components/LiquidGlass.jsx';
 import { useAnalysis } from '../hooks/useAnalysis.js';
 
 function AnalysisResult() {
@@ -49,14 +50,43 @@ function AnalysisResult() {
   return (
     <div className="result-page">
       <div className="page-actions" style={{ justifyContent: 'space-between', display: 'flex', width: '100%', gap: '16px' }}>
-        <Link to="/" className="secondary-button">
+        <LiquidGlass
+          tagName={Link}
+          to="/"
+          className="secondary-button liquid-glass"
+          depth={15}
+          blur={8}
+          tint={0.06}
+          tintColor="#ffffff"
+          glint={20}
+          hoverParams={{
+            depth: 22,
+            glint: 35,
+            tint: 0.1
+          }}
+        >
           <ArrowLeft size={16} aria-hidden="true" />
           New analysis
-        </Link>
-        <Link to={`/chat?analysisId=${id}`} className="primary-button" style={{ minHeight: '40px', padding: '8px 16px', fontSize: '0.88rem' }}>
+        </LiquidGlass>
+        <LiquidGlass
+          tagName={Link}
+          to={`/chat?analysisId=${id}`}
+          className="primary-button liquid-glass"
+          style={{ minHeight: '40px', padding: '8px 16px', fontSize: '0.88rem' }}
+          depth={20}
+          blur={10}
+          tint={0.12}
+          tintColor="var(--accent-dim)"
+          glint={30}
+          hoverParams={{
+            depth: 28,
+            glint: 45,
+            tint: 0.18
+          }}
+        >
           <MessageSquare size={16} aria-hidden="true" />
           Discuss report with AI
-        </Link>
+        </LiquidGlass>
       </div>
 
       <section className="result-header">

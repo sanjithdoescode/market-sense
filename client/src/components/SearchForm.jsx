@@ -29,6 +29,7 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import MapPicker from './MapPicker.jsx';
+import LiquidGlass from './LiquidGlass.jsx';
 
 const initialValues = {
   location: '',
@@ -629,14 +630,25 @@ function SearchForm({ onSubmit, loading }) {
         </label>
       </div>
 
-      <button
-        className="primary-button"
+      <LiquidGlass
+        tagName="button"
         type="submit"
+        className="primary-button liquid-glass"
         disabled={loading || !values.location || !values.businessType}
+        depth={22}
+        blur={12}
+        tint={0.12}
+        tintColor="var(--accent-dim)"
+        glint={35}
+        hoverParams={{
+          depth: 32,
+          glint: 50,
+          tint: 0.18
+        }}
       >
         <Search size={18} aria-hidden="true" />
         {loading ? 'Analyzing' : 'Run analysis'}
-      </button>
+      </LiquidGlass>
 
       {/* Select Business Type Modal overlay */}
       {showMoreModal && (

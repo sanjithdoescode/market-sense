@@ -77,7 +77,7 @@ function MapPicker({ value, onChange }) {
               path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
               fillColor: '#34d399',
               fillOpacity: 1,
-              strokeColor: '#0e0e11',
+              strokeColor: '#ffffff',
               strokeWeight: 2,
               scale: 1.5,
               anchor: new window.google.maps.Point(12, 22)
@@ -174,71 +174,6 @@ function MapPicker({ value, onChange }) {
     const map = new window.google.maps.Map(mapRef.current, {
       center: defaultCenter,
       zoom: 12,
-      styles: [
-        { elementType: 'geometry', stylers: [{ color: '#1a1a24' }] },
-        { elementType: 'labels.text.stroke', stylers: [{ color: '#1a1a24' }] },
-        { elementType: 'labels.text.fill', stylers: [{ color: '#74748b' }] },
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#8e8ea8' }]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#6e6e82' }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{ color: '#12251e' }]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#34d399', opacity: 0.6 }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{ color: '#242432' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.stroke',
-          stylers: [{ color: '#1a1a24' }]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#74748b' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry',
-          stylers: [{ color: '#2e2e3f' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry.stroke',
-          stylers: [{ color: '#1a1a24' }]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#a0a0b8' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{ color: '#0c0c12' }]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{ color: '#44445a' }]
-        }
-      ],
       disableDefaultUI: true,
       zoomControl: true
     });
@@ -250,7 +185,7 @@ function MapPicker({ value, onChange }) {
       path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z',
       fillColor: '#34d399',
       fillOpacity: 1,
-      strokeColor: '#0e0e11',
+      strokeColor: '#ffffff',
       strokeWeight: 2,
       scale: 1.5,
       anchor: new window.google.maps.Point(12, 22)
