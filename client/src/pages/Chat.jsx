@@ -154,7 +154,19 @@ function VoiceButton({ onTranscript, disabled }) {
     setListening(false);
   }, []);
 
-  if (!supported) return null;
+  if (!supported) {
+    return (
+      <button
+        type="button"
+        className="voice-btn"
+        disabled
+        title="Voice input is not natively supported in Firefox. Use Chrome, Edge, or Safari for voice input."
+        aria-label="Voice input not supported"
+      >
+        <MicOff size={16} />
+      </button>
+    );
+  }
 
   return (
     <button
