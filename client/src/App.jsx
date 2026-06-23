@@ -79,75 +79,76 @@ function App() {
         <div className="bg-orb bg-orb--3" />
       </div>
 
-      <LiquidGlass
-        tagName="header"
-        className={`topbar ${scrolled ? 'scrolled' : ''}`}
-        style={{ position: 'fixed' }}
-        depth={scrolled ? 35 : 45}
-        blur={1}
-        glint={scrolled ? 30 : 40}
-        tint={0.12}
-        tintColor="#ffffff"
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <NavLink to="/" className="brand" aria-label="MarketSense dashboard">
-            <img src="/images/marketsense_logo.png" className="brand-logo-img" alt="MarketSense Logo" />
-            <span>MarketSense</span>
-          </NavLink>
-        </div>
-
-        <nav className="primary-nav" aria-label="Primary navigation">
-          <NavLink
-            to="/"
-            className={`nav-link ${isAnalyzeActive ? 'active' : ''}`}
-          >
-            <span className="nav-link-title">
-              <Search size={15} aria-hidden="true" />
-              <span>Analyze</span>
-            </span>
-            <span className="nav-link-keybind" aria-label="shortcut: Command Control A">
-              <kbd>⌘</kbd>
-              <kbd>⌃</kbd>
-              <kbd>A</kbd>
-            </span>
-          </NavLink>
-
-          <NavLink
-            to="/history"
-            className={`nav-link ${isHistoryActive ? 'active' : ''}`}
-          >
-            <span className="nav-link-title">
-              <History size={15} aria-hidden="true" />
-              <span>History</span>
-            </span>
-            <span className="nav-link-keybind" aria-label="shortcut: Command Control H">
-              <kbd>⌘</kbd>
-              <kbd>⌃</kbd>
-              <kbd>H</kbd>
-            </span>
-          </NavLink>
-        </nav>
-
-        <NavLink
-          to="/chat"
-          className={`nav-cta-btn ${isChatActive ? 'active' : ''}`}
-          aria-label="AI Chat Assistant"
+      <header className={`topbar ${scrolled ? 'scrolled' : ''}`}>
+        <LiquidGlass
+          tagName="div"
+          className={`topbar-inner ${scrolled ? 'scrolled' : ''}`}
+          depth={scrolled ? 35 : 45}
+          blur={1}
+          glint={scrolled ? 30 : 40}
+          tint={0.12}
+          tintColor="#ffffff"
         >
-          <img
-            src={
-              provider === 'openai' ? '/images/openai.png' :
-              provider === 'anthropic' ? '/images/anthropic-light.png' :
-              provider === 'gemini' ? '/images/gemini-color-light.png' :
-              '/images/mistral.png'
-            }
-            alt=""
-            className="nav-logo-img"
-            draggable="false"
-            style={{ objectFit: 'contain' }}
-          />
-          <span>AI Chat</span>
-        </NavLink>
-      </LiquidGlass>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <NavLink to="/" className="brand" aria-label="MarketSense dashboard">
+              <img src="/images/marketsense_logo.png" className="brand-logo-img" alt="MarketSense Logo" />
+              <span>MarketSense</span>
+            </NavLink>
+          </div>
+
+          <nav className="primary-nav" aria-label="Primary navigation">
+            <NavLink
+              to="/"
+              className={`nav-link ${isAnalyzeActive ? 'active' : ''}`}
+            >
+              <span className="nav-link-title">
+                <Search size={15} aria-hidden="true" />
+                <span>Analyze</span>
+              </span>
+              <span className="nav-link-keybind" aria-label="shortcut: Command Control A">
+                <kbd>⌘</kbd>
+                <kbd>⌃</kbd>
+                <kbd>A</kbd>
+              </span>
+            </NavLink>
+
+            <NavLink
+              to="/history"
+              className={`nav-link ${isHistoryActive ? 'active' : ''}`}
+            >
+              <span className="nav-link-title">
+                <History size={15} aria-hidden="true" />
+                <span>History</span>
+              </span>
+              <span className="nav-link-keybind" aria-label="shortcut: Command Control H">
+                <kbd>⌘</kbd>
+                <kbd>⌃</kbd>
+                <kbd>H</kbd>
+              </span>
+            </NavLink>
+          </nav>
+
+          <NavLink
+            to="/chat"
+            className={`nav-cta-btn ${isChatActive ? 'active' : ''}`}
+            aria-label="AI Chat Assistant"
+          >
+            <img
+              src={
+                provider === 'openai' ? '/images/openai.png' :
+                provider === 'anthropic' ? '/images/anthropic-light.png' :
+                provider === 'gemini' ? '/images/gemini-color-light.png' :
+                '/images/mistral.png'
+              }
+              alt=""
+              className="nav-logo-img"
+              draggable="false"
+              style={{ objectFit: 'contain' }}
+            />
+            <span>AI Chat</span>
+          </NavLink>
+        </LiquidGlass>
+      </header>
 
       <main className="main-content">
         <AppRoutes />
