@@ -43,11 +43,10 @@ const PROVIDERS = [
 
 const MODEL_OPTIONS = {
   mistral: [
-    { id: 'mistral-large-3', name: 'Mistral Large 3' },
-    { id: 'mistral-medium-3.5', name: 'Mistral Medium 3.5' },
-    { id: 'mistral-small-4', name: 'Mistral Small 4' },
-    { id: 'devstral-2', name: 'Devstral 2' },
-    { id: 'codestral-latest', name: 'Codestral' }
+    { id: 'mistral-large-latest', name: 'Mistral Large' },
+    { id: 'mistral-medium-latest', name: 'Mistral Medium' },
+    { id: 'mistral-small-latest', name: 'Mistral Small' },
+    { id: 'mistral-tiny-latest', name: 'Mistral Tiny' }
   ],
   openai: [
     { id: 'gpt-5.5', name: 'GPT-5.5' },
@@ -332,12 +331,18 @@ function Chat() {
     anthropic: localStorage.getItem('byok_key_anthropic') || '',
     gemini: localStorage.getItem('byok_key_gemini') || '',
   }));
-  const [apiModels, setApiModels] = useState(() => ({
-    mistral: localStorage.getItem('byok_model_mistral') || 'mistral-large-3',
-    openai: localStorage.getItem('byok_model_openai') || 'gpt-5.5',
-    anthropic: localStorage.getItem('byok_model_anthropic') || 'claude-fable-5',
-    gemini: localStorage.getItem('byok_model_gemini') || 'gemini-3.5-flash',
-  }));
+  const [apiModels, setApiModels] = useState(() => {
+    const storedMistral = localStorage.getItem('byok_model_mistral');
+    const validMistral = ['mistral-large-latest', 'mistral-medium-latest', 'mistral-small-latest', 'mistral-tiny-latest'].includes(storedMistral)
+      ? storedMistral
+      : 'mistral-large-latest';
+    return {
+      mistral: validMistral,
+      openai: localStorage.getItem('byok_model_openai') || 'gpt-5.5',
+      anthropic: localStorage.getItem('byok_model_anthropic') || 'claude-fable-5',
+      gemini: localStorage.getItem('byok_model_gemini') || 'gemini-3.5-flash',
+    };
+  });
 
   const [showSettings, setShowSettings] = useState(false);
   const [tempProvider, setTempProvider] = useState(provider);
