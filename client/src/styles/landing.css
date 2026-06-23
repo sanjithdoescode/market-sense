@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════
-   MarketSite Analyst — Landing Page (Light Mode, Serif Editorial)
+   MarketSense — Landing Page (Light Mode, Serif Editorial)
    Matches the app's actual design: white/grey · orange · serif fonts
    ═══════════════════════════════════════════════════════════════════ */
 
@@ -171,6 +171,12 @@
 
 .landing-brand svg {
   color: var(--lp-accent);
+}
+
+.brand-logo-img {
+  height: 20px;
+  width: auto;
+  object-fit: contain;
 }
 
 .landing-nav-links {

@@ -1,7 +1,7 @@
 services:
   mongo:
     image: mongo:7
-    container_name: marketsite-analyst-mongo
+    container_name: marketsense-mongo
     restart: unless-stopped
     ports:
       - "27017:27017"

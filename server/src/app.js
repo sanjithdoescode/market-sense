@@ -28,7 +28,7 @@ app.get('/health', (_req, res) => {
   res.status(200).json({
     success: true,
     data: {
-      service: 'marketsite-analyst-api',
+      service: 'marketsense-api',
       status: 'ok',
       timestamp: new Date().toISOString()
     }

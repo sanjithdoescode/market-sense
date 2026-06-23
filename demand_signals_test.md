@@ -1,4 +1,4 @@
-# MarketSite Analyst API — Demand Signals Test Results Log
+# MarketSense API — Demand Signals Test Results Log
 
 ## 📋 Run Metadata
 - **Port:** `5001`
@@ -192,7 +192,7 @@
 <summary>Click to view exact raw console logs</summary>
 
 ```
-MarketSite Analyst API listening on port 5001
+MarketSense API listening on port 5001
 {"message":"AudienceProfile cache miss — calling Mistral.","businessType":"restaurant","niche":""}
 {"message":"Demand signal search result (quality-filtered)","category":"movie_theater","tier":"MEDIUM","weight":4,"rawCount":17,"afterFilter":13,"validInstitutions":10,"closestDistanceMeters":1749,"averageDistanceMeters":3373,"places":["Midlaand Cinemas","Guru Theatre","Mathi Theatre","SOLAMALAI CINEMAS","Kasi Theatre","RADIANCE CINEMA","Thanga Regal","Sakthi Cinemas A/C","Home Cinemas","Gopuram Cinemas"]}
 

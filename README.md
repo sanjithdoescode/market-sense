@@ -1,6 +1,6 @@
-# MarketSite Analyst
+# MarketSense
 
-MarketSite Analyst is a MERN application that evaluates whether a location is suitable for opening a business. It discovers nearby competitors through Google Places, enriches competitor records with Place Details, asks Mistral for structured market analysis, and stores the analysis history in MongoDB.
+MarketSense is a MERN application that evaluates whether a location is suitable for opening a business. It discovers nearby competitors through Google Places, enriches competitor records with Place Details, asks Mistral for structured market analysis, and stores the analysis history in MongoDB.
 
 ## Architecture
 
@@ -22,7 +22,7 @@ Credentials never leave the backend. The frontend calls only the REST API.
 ## Setup
 
 ```bash
-cd marketsite-analyst
+cd market-research
 cp .env.example .env
 npm install
 docker compose up -d mongo

@@ -138,8 +138,8 @@ function Landing() {
       <header className="landing-nav">
         <div className="landing-nav-inner">
           <a href="#landing-top" className="landing-brand">
-            <MapPinned size={20} aria-hidden="true" />
-            <span>MarketSite Analyst</span>
+            <img src="/images/marketsense_logo.png" className="brand-logo-img" alt="MarketSense Logo" />
+            <span>MarketSense</span>
           </a>
 
           <nav className="landing-nav-links" aria-label="Landing navigation">
@@ -445,8 +445,8 @@ function Landing() {
       <footer className="landing-footer">
         <div className="landing-footer-inner">
           <div className="footer-brand">
-            <MapPinned size={16} />
-            <span>MarketSite Analyst</span>
+            <img src="/images/marketsense_logo.png" className="brand-logo-img" alt="MarketSense Logo" style={{ height: '16px' }} />
+            <span>MarketSense</span>
           </div>
           <div className="footer-meta">
             <Zap size={12} />

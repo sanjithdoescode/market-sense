@@ -1,6 +1,6 @@
 # Architecture
 
-MarketSite Analyst uses a modular MERN architecture.
+MarketSense uses a modular MERN architecture.
 
 ## Request Flow
 

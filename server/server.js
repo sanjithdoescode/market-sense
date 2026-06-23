@@ -8,7 +8,7 @@ async function startServer() {
   await connectDatabase();
 
   server = app.listen(env.port, () => {
-    console.info(`MarketSite Analyst API listening on port ${env.port}`);
+    console.info(`MarketSense API listening on port ${env.port}`);
   });
 }
 

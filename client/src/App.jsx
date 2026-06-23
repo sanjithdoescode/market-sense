@@ -90,9 +90,9 @@ function App() {
         tintColor="#ffffff"
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <NavLink to="/" className="brand" aria-label="MarketSite Analyst dashboard">
-            <MapPinned size={20} aria-hidden="true" />
-            <span>MarketSite Analyst</span>
+          <NavLink to="/" className="brand" aria-label="MarketSense dashboard">
+            <img src="/images/marketsense_logo.png" className="brand-logo-img" alt="MarketSense Logo" />
+            <span>MarketSense</span>
           </NavLink>
         </div>
 
