@@ -16,6 +16,7 @@ function App() {
   const isChatActive = location.pathname === '/chat';
 
   const [scrolled, setScrolled] = useState(false);
+  const [provider, setProvider] = useState(() => localStorage.getItem('byok_provider') || 'mistral');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +25,18 @@ function App() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleProviderChange = () => {
+      setProvider(localStorage.getItem('byok_provider') || 'mistral');
+    };
+    window.addEventListener('byok_provider_change', handleProviderChange);
+    window.addEventListener('storage', handleProviderChange);
+    return () => {
+      window.removeEventListener('byok_provider_change', handleProviderChange);
+      window.removeEventListener('storage', handleProviderChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -120,7 +133,18 @@ function App() {
           className={`nav-cta-btn ${isChatActive ? 'active' : ''}`}
           aria-label="AI Chat Assistant"
         >
-          <img src="/images/mistral.png" alt="" className="nav-logo-img" draggable="false" />
+          <img
+            src={
+              provider === 'openai' ? '/images/openai.png' :
+              provider === 'anthropic' ? '/images/anthropic-light.png' :
+              provider === 'gemini' ? '/images/gemini-color-light.png' :
+              '/images/mistral.png'
+            }
+            alt=""
+            className="nav-logo-img"
+            draggable="false"
+            style={{ objectFit: 'contain' }}
+          />
           <span>AI Chat</span>
         </NavLink>
       </LiquidGlass>

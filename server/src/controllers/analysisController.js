@@ -16,14 +16,14 @@ export async function createAnalysis(req, res, next) {
 export async function chatWithAnalysis(req, res, next) {
   try {
     const { id } = req.params;
-    const { messages } = req.validatedBody;
+    const { messages, provider, apiKey } = req.validatedBody;
 
     const analysis = await findAnalysisById(id);
     if (!analysis) {
       throw new AppError(404, 'Analysis record not found.');
     }
 
-    const chatResponse = await generateChatResponse({ analysis, messages });
+    const chatResponse = await generateChatResponse({ analysis, messages, provider, apiKey });
     return sendSuccess(res, chatResponse);
   } catch (error) {
     return next(error);
@@ -32,8 +32,8 @@ export async function chatWithAnalysis(req, res, next) {
 
 export async function chatGeneral(req, res, next) {
   try {
-    const { messages } = req.validatedBody;
-    const chatResponse = await generateChatResponse({ analysis: null, messages });
+    const { messages, provider, apiKey } = req.validatedBody;
+    const chatResponse = await generateChatResponse({ analysis: null, messages, provider, apiKey });
     return sendSuccess(res, chatResponse);
   } catch (error) {
     return next(error);

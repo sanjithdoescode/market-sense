@@ -2,10 +2,44 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
   Plus, Send, Bot, User, Sparkles, AlertCircle, History,
-  MessageSquare, ChevronRight, X, Mic, MicOff, StopCircle
+  MessageSquare, ChevronRight, X, Mic, MicOff, StopCircle,
+  Settings, Key, Eye, EyeOff, Check
 } from 'lucide-react';
 import { useAnalysis } from '../hooks/useAnalysis.js';
 import { sendChatMessage, sendGeneralChatMessage } from '../api/analysisApi.js';
+
+function ProviderLogo({ provider, className = 'ai-avatar-img', style }) {
+  let src = '/images/mistral.png';
+  let alt = 'Mistral AI';
+
+  if (provider === 'openai') {
+    src = '/images/openai.png';
+    alt = 'OpenAI';
+  } else if (provider === 'anthropic') {
+    src = '/images/anthropic-light.png';
+    alt = 'Anthropic';
+  } else if (provider === 'gemini') {
+    src = '/images/gemini-color-light.png';
+    alt = 'Google Gemini';
+  }
+
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      style={{ objectFit: 'contain', ...style }}
+      draggable="false"
+    />
+  );
+}
+
+const PROVIDERS = [
+  { id: 'mistral', name: 'Mistral AI' },
+  { id: 'openai', name: 'OpenAI' },
+  { id: 'anthropic', name: 'Anthropic' },
+  { id: 'gemini', name: 'Google Gemini' }
+];
 
 /* ── Markdown parser ────────────────────────────────────────── */
 function parseMarkdownToHtml(text) {
@@ -110,11 +144,11 @@ function MessageContent({ text }) {
 }
 
 /* ── Typing dots ─────────────────────────────────────────────── */
-function TypingIndicator() {
+function TypingIndicator({ provider }) {
   return (
     <div className="chat-typing-indicator">
-      <div className="typing-avatar">
-        <img src="/images/mistral.png" alt="AI" className="ai-avatar-img" draggable="false" />
+      <div className="typing-avatar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <ProviderLogo provider={provider} className="ai-avatar-img" />
       </div>
       <div className="typing-dots">
         <span /><span /><span />
@@ -261,6 +295,58 @@ function Chat() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const [provider, setProvider] = useState(() => localStorage.getItem('byok_provider') || 'mistral');
+  const [apiKeys, setApiKeys] = useState(() => ({
+    mistral: localStorage.getItem('byok_key_mistral') || '',
+    openai: localStorage.getItem('byok_key_openai') || '',
+    anthropic: localStorage.getItem('byok_key_anthropic') || '',
+    gemini: localStorage.getItem('byok_key_gemini') || '',
+  }));
+
+  const [showSettings, setShowSettings] = useState(false);
+  const [tempProvider, setTempProvider] = useState(provider);
+  const [tempApiKeys, setTempApiKeys] = useState(apiKeys);
+  const [showKey, setShowKey] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+
+  // Sync temp state when modal opens
+  useEffect(() => {
+    if (showSettings) {
+      setTempProvider(provider);
+      setTempApiKeys(apiKeys);
+      setSaveSuccess(false);
+      setShowKey(false);
+    }
+  }, [showSettings, provider, apiKeys]);
+
+  const handleKeyChange = (prov, val) => {
+    setTempApiKeys(prev => ({ ...prev, [prov]: val }));
+  };
+
+  const saveSettings = () => {
+    localStorage.setItem('byok_provider', tempProvider);
+    localStorage.setItem('byok_key_mistral', tempApiKeys.mistral);
+    localStorage.setItem('byok_key_openai', tempApiKeys.openai);
+    localStorage.setItem('byok_key_anthropic', tempApiKeys.anthropic);
+    localStorage.setItem('byok_key_gemini', tempApiKeys.gemini);
+
+    setProvider(tempProvider);
+    setApiKeys(tempApiKeys);
+    setSaveSuccess(true);
+
+    window.dispatchEvent(new Event('byok_provider_change'));
+
+    setTimeout(() => {
+      setSaveSuccess(false);
+      setShowSettings(false);
+    }, 1000);
+  };
+
+  const getDisclaimerText = () => {
+    const providerName = PROVIDERS.find(p => p.id === provider)?.name || 'Mistral AI';
+    return `AI insights may be inaccurate. Cross-reference independently. Powered by ${providerName}.`;
+  };
+
   const messagesEndRef = useRef(null);
   const messagesAreaRef = useRef(null);
 
@@ -313,9 +399,10 @@ function Chat() {
 
     try {
       const apiMessages = updatedMessages.slice(1).map(msg => ({ role: msg.role, content: msg.content }));
+      const byokSettings = { provider, apiKey: apiKeys[provider] || '' };
       const response = analysisId
-        ? await sendChatMessage(analysisId, apiMessages)
-        : await sendGeneralChatMessage(apiMessages);
+        ? await sendChatMessage(analysisId, apiMessages, byokSettings)
+        : await sendGeneralChatMessage(apiMessages, byokSettings);
 
       setMessages(prev => [...prev, { role: 'assistant', content: response.message }]);
     } catch (err) {
@@ -390,38 +477,15 @@ function Chat() {
 
       {/* ── Main Panel ── */}
       <main className="chat-main-v2">
-        {/* Context badge in header */}
-        <header className="chat-header-v2">
-          <div className="context-pill">
-            <Sparkles size={13} className="context-sparkle" />
-            <div className="context-text">
-              {analysisId && currentContext ? (
-                <>
-                  <span className="context-mode">Context Mode</span>
-                  <span className="context-name">{currentContext.input.businessType} · {currentContext.input.location}</span>
-                </>
-              ) : (
-                <>
-                  <span className="context-mode">General Strategist</span>
-                  <span className="context-name">Location &amp; Business Strategy Chat</span>
-                </>
-              )}
-            </div>
-            {analysisId && (
-              <button className="context-clear-btn" onClick={startNewChat} title="Clear context">
-                <X size={12} />
-              </button>
-            )}
-          </div>
-        </header>
+
 
         {/* Messages area */}
         <div className="chat-messages-v2" ref={messagesAreaRef}>
           {/* Empty / Welcome state */}
           {isEmptyState && (
             <div className="welcome-state">
-              <div className="welcome-orb">
-                <img src="/images/mistral.png" alt="Mistral AI" className="welcome-logo-img" draggable="false" />
+              <div className="welcome-orb" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ProviderLogo provider={provider} className="welcome-logo-img" />
               </div>
               <h2 className="welcome-heading">How can I help you today?</h2>
               <p className="welcome-sub">Ask about competitor densities, pricing sweet spots, or brainstorm startup locations.</p>
@@ -444,8 +508,8 @@ function Chat() {
               style={{ animationDelay: `${idx * 0.04}s` }}
             >
               {msg.role === 'assistant' ? (
-                <div className="msg-avatar msg-avatar--ai">
-                  <img src="/images/mistral.png" alt="AI" className="ai-avatar-img" draggable="false" />
+                <div className="msg-avatar msg-avatar--ai" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <ProviderLogo provider={provider} className="ai-avatar-img" />
                 </div>
               ) : (
                 <div className="msg-avatar msg-avatar--user">
@@ -462,7 +526,7 @@ function Chat() {
           ))}
 
           {/* Typing indicator */}
-          {loading && <TypingIndicator />}
+          {loading && <TypingIndicator provider={provider} />}
 
           {/* Error */}
           {error && (
@@ -478,11 +542,178 @@ function Chat() {
         {/* Input bar */}
         <footer className="chat-footer-v2">
           <ChatInput onSend={handleSend} loading={loading} placeholder={placeholder} />
-          <p className="chat-disclaimer-v2">
-            MarketSite AI may generate inaccurate insights. Cross-reference competitor details independently. This bot is powered by Mistral AI but is not an official product of Mistral AI.
-          </p>
+          <div className="chat-footer-meta">
+            {analysisId && currentContext ? (
+              <div className="context-pill">
+                <Sparkles size={11} className="context-sparkle" />
+                <div className="context-text">
+                  <span className="context-mode">Context Mode</span>
+                  <span className="context-name">{currentContext.input.businessType} · {currentContext.input.location}</span>
+                </div>
+                <button className="context-clear-btn" onClick={startNewChat} title="Clear context">
+                  <X size={10} />
+                </button>
+              </div>
+            ) : (
+              <div />
+            )}
+
+            <p className="chat-disclaimer-v2">
+              {getDisclaimerText()}
+            </p>
+
+            <button
+              onClick={() => setShowSettings(true)}
+              className="chat-provider-btn"
+              title="Configure AI Provider & Key"
+            >
+              <ProviderLogo provider={provider} className="ai-avatar-img" style={{ width: '14px', height: '14px', marginTop: 0 }} />
+              <span>{PROVIDERS.find(p => p.id === provider)?.name}</span>
+              <Settings size={12} style={{ opacity: 0.7 }} />
+            </button>
+          </div>
         </footer>
       </main>
+
+      {/* ── BYOK Settings Modal ── */}
+      {showSettings && (
+        <div className="modal-overlay" onClick={() => setShowSettings(false)}>
+          <div className="modal-container" onClick={e => e.stopPropagation()} style={{ maxWidth: '560px' }}>
+            <header className="modal-header">
+              <h2 style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <Settings size={20} style={{ color: 'var(--accent)' }} />
+                <span>AI Provider Settings</span>
+              </h2>
+              <button className="modal-close-btn" onClick={() => setShowSettings(false)}>
+                <X size={18} />
+              </button>
+            </header>
+            <div className="modal-body" style={{ padding: '20px 24px' }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--text-muted)', margin: '0 0 16px', lineHeight: '1.5' }}>
+                Configure the LLM engine powering your chat assistant. You can use the default Mistral API or supply your own keys.
+              </p>
+              
+              {/* Provider Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '24px' }}>
+                {PROVIDERS.map(p => {
+                  const isActive = tempProvider === p.id;
+                  return (
+                    <button
+                      key={p.id}
+                      type="button"
+                      onClick={() => {
+                        setTempProvider(p.id);
+                        setShowKey(false);
+                      }}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '10px',
+                        padding: '16px 8px 12px',
+                        borderRadius: '12px',
+                        border: isActive ? '1px solid var(--accent)' : '1px solid var(--border)',
+                        background: isActive ? 'var(--accent-glow)' : 'var(--surface-1)',
+                        cursor: 'pointer',
+                        transition: 'all 0.22s var(--ease-out)',
+                        height: '114px'
+                      }}
+                      className="provider-tile"
+                    >
+                      <div style={{ width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <ProviderLogo provider={p.id} className="tile-logo-img" style={{ width: '36px', height: '36px' }} />
+                      </div>
+                      <span style={{ fontSize: '0.78rem', fontWeight: isActive ? '700' : '500', color: isActive ? 'var(--ink)' : 'var(--text-secondary)', textAlign: 'center', lineHeight: '1.2' }}>
+                        {p.name}
+                      </span>
+                      {p.id === 'mistral' && !tempApiKeys[p.id] && (
+                        <span style={{ fontSize: '0.62rem', background: 'var(--border)', color: 'var(--text-muted)', padding: '2px 6px', borderRadius: '4px', marginTop: '-2px' }}>
+                          Default
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Key Input */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '16px' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: '700', color: 'var(--ink)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                  {tempProvider === 'mistral' ? 'Mistral API Key (Optional)' : `${PROVIDERS.find(p => p.id === tempProvider)?.name} API Key`}
+                </label>
+                <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                  <input
+                    type={showKey ? 'text' : 'password'}
+                    value={tempApiKeys[tempProvider]}
+                    onChange={e => handleKeyChange(tempProvider, e.target.value)}
+                    placeholder={tempProvider === 'mistral' ? 'Leave empty to use system default' : `Enter your ${PROVIDERS.find(p => p.id === tempProvider)?.name} API Key`}
+                    style={{
+                      width: '100%',
+                      padding: '12px 42px 12px 14px',
+                      borderRadius: '8px',
+                      border: '1px solid var(--border)',
+                      background: 'var(--surface-2)',
+                      color: 'var(--ink)',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowKey(!showKey)}
+                    style={{
+                      position: 'absolute',
+                      right: '12px',
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--text-muted)',
+                      cursor: 'pointer',
+                      padding: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {showKey ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                <span style={{ fontSize: '0.74rem', color: 'var(--text-muted)', lineHeight: '1.4' }}>
+                  {tempProvider === 'mistral'
+                    ? 'Using the default Mistral engine. No API key is required, but you can enter your own key here.'
+                    : `To use ${PROVIDERS.find(p => p.id === tempProvider)?.name}, you must provide an API key. Your key is stored locally in your browser.`}
+                </span>
+              </div>
+            </div>
+            
+            {/* Modal Footer */}
+            <footer className="modal-footer-search-container" style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', padding: '16px 24px', borderTop: '1px solid var(--border)', background: 'rgba(0,0,0,0.015)', alignItems: 'center' }}>
+              {saveSuccess && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', fontSize: '0.84rem', fontWeight: '600', marginRight: 'auto' }}>
+                  <Check size={16} />
+                  <span>Settings saved successfully!</span>
+                </div>
+              )}
+              <button
+                type="button"
+                className="voice-btn"
+                style={{ borderRadius: '8px', width: 'auto', height: '38px', padding: '0 16px', fontSize: '0.85rem' }}
+                onClick={() => setShowSettings(false)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="new-chat-btn"
+                style={{ width: 'auto', height: '38px', padding: '0 20px', fontSize: '0.85rem' }}
+                onClick={saveSettings}
+              >
+                Save Settings
+              </button>
+            </footer>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

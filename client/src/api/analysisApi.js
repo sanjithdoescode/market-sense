@@ -42,17 +42,25 @@ export function deleteHistoryItem(id) {
   });
 }
 
-export function sendChatMessage(id, messages) {
+export function sendChatMessage(id, messages, byokSettings = {}) {
   return request(`/analysis/${id}/chat`, {
     method: 'POST',
-    body: JSON.stringify({ messages })
+    body: JSON.stringify({
+      messages,
+      provider: byokSettings.provider,
+      apiKey: byokSettings.apiKey
+    })
   });
 }
 
-export function sendGeneralChatMessage(messages) {
+export function sendGeneralChatMessage(messages, byokSettings = {}) {
   return request('/analysis/chat', {
     method: 'POST',
-    body: JSON.stringify({ messages })
+    body: JSON.stringify({
+      messages,
+      provider: byokSettings.provider,
+      apiKey: byokSettings.apiKey
+    })
   });
 }
 

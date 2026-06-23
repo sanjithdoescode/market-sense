@@ -285,9 +285,26 @@ export async function generateMarketAnalysis({
  * @param {object} params.analysis - Fully populated analysis document
  * @param {object[]} params.messages - Conversational history array
  */
-export async function generateChatResponse({ analysis, messages }) {
-  const apiKey = requireEnv('MISTRAL_API_KEY', mistralConfig.apiKey);
+export async function generateChatResponse({ analysis, messages, provider = 'mistral', apiKey }) {
   const systemPrompt = analysis ? buildChatSystemPrompt(analysis) : buildGeneralChatSystemPrompt();
+
+  if (provider === 'openai') {
+    const { generateOpenAIChatResponse } = await import('./openaiService.js');
+    return generateOpenAIChatResponse({ systemPrompt, messages, apiKey });
+  }
+
+  if (provider === 'anthropic') {
+    const { generateAnthropicChatResponse } = await import('./anthropicService.js');
+    return generateAnthropicChatResponse({ systemPrompt, messages, apiKey });
+  }
+
+  if (provider === 'gemini') {
+    const { generateGeminiChatResponse } = await import('./geminiService.js');
+    return generateGeminiChatResponse({ systemPrompt, messages, apiKey });
+  }
+
+  // Default to Mistral
+  const resolvedApiKey = apiKey || requireEnv('MISTRAL_API_KEY', mistralConfig.apiKey);
 
   const conversation = [
     { role: 'system', content: systemPrompt },
@@ -302,7 +319,7 @@ export async function generateChatResponse({ analysis, messages }) {
       method: 'POST',
       signal: controller.signal,
       headers: {
-        Authorization: `Bearer ${apiKey}`,
+        Authorization: `Bearer ${resolvedApiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
