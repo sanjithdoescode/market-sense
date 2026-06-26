@@ -10,11 +10,11 @@ function AnalysisProgressModal({ isOpen, progress = 0, status = 'Initializing AI
           <Radar className="progress-modal-icon rotate-animation" size={20} />
           <span>Location Analysis in Progress</span>
         </h2>
-        
+
         <div className="progress-bar-container">
-          <div 
-            className="progress-bar-fill" 
-            style={{ width: `${progress}%` }} 
+          <div
+            className="progress-bar-fill"
+            style={{ width: `${progress}%` }}
           />
         </div>
 
@@ -22,6 +22,10 @@ function AnalysisProgressModal({ isOpen, progress = 0, status = 'Initializing AI
           <span className="progress-status-text">{status}</span>
           <span className="progress-percent">{progress}%</span>
         </div>
+
+        <p className="progress-disclaimer">
+          This analysis processes large volumes of location, competitor, and demand data. Please hang tight, it's worth it.
+        </p>
       </div>
     </div>
   );
