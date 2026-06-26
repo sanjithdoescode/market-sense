@@ -17,7 +17,7 @@ const getApiBaseUrl = () => {
     window.location.hostname.endsWith('.local')
   );
 
-  return isLocal ? '/api' : 'https://market-research-server-iokbyzkr4-sanjithdoescodes-projects.vercel.app/api';
+  return isLocal ? '/api' : 'https://market-research-server.vercel.app/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
