@@ -17,7 +17,30 @@ const getApiBaseUrl = () => {
     window.location.hostname.endsWith('.local')
   );
 
-  return isLocal ? '/api' : 'https://market-research-server.vercel.app/api';
+  if (isLocal) {
+    return '/api';
+  }
+
+  // Dynamic check for Vercel preview deployments
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    const isVercelPreview = hostname.endsWith('.vercel.app') &&
+      hostname !== 'marketsense-blond.vercel.app' &&
+      (hostname.includes('-sanjithdoescodes-projects') || hostname.includes('-git-'));
+
+    if (isVercelPreview) {
+      // Try to extract branch name from branch-specific Vercel URL
+      // Example: marketsense-git-preview-sanjithdoescodes-projects.vercel.app
+      const gitMatch = hostname.match(/^marketsense-git-([a-zA-Z0-9-]+)-sanjithdoescodes-projects\.vercel\.app$/i);
+      if (gitMatch) {
+        return `https://market-research-server-git-${gitMatch[1]}-sanjithdoescodes-projects.vercel.app/api`;
+      }
+      // Fallback for commit-specific preview URLs
+      return 'https://market-research-server-git-preview-sanjithdoescodes-projects.vercel.app/api';
+    }
+  }
+
+  return 'https://market-research-server.vercel.app/api';
 };
 
 const API_BASE_URL = getApiBaseUrl();
