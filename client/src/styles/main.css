@@ -1379,6 +1379,7 @@ gmp-place-autocomplete::part(input):focus {
               0 0 16px rgba(30, 58, 95, 0.06) !important;
 }
 
+
 .map-fallback-input {
   width: 100%;
   min-height: 44px;
