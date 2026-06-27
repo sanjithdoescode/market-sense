@@ -3533,6 +3533,7 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
 .sidebar-header {
   padding: 14px 16px 4px;
   transition: padding 0.3s ease;
+  flex-shrink: 0;
 }
 
 .chat-shell.sidebar-collapsed .chat-sidebar-v2:not(:hover):not(.is-expanded) .sidebar-header {
@@ -3554,6 +3555,7 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
   font-size: 0.83rem;
   font-weight: 700;
   cursor: pointer;
+  flex-shrink: 0;
   transition: 
     width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -3604,6 +3606,7 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
   color: var(--text-muted);
   margin: 0;
   transition: padding 0.3s ease, justify-content 0.3s ease;
+  flex-shrink: 0;
 }
 
 .sidebar-label span {
@@ -3665,6 +3668,7 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
   cursor: pointer;
   text-align: left;
   font-family: var(--font-body);
+  flex-shrink: 0;
   transition: 
     width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -4398,6 +4402,8 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
     width: 280px;
     max-width: 80%;
     height: 100%;
+    min-height: 0;
+    max-height: 100%;
     background: var(--bg);
     box-shadow: 8px 0 32px rgba(0, 0, 0, 0.15);
     display: flex;
@@ -4411,6 +4417,7 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
     justify-content: space-between;
     padding: 24px 20px 12px;
     border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
   }
   
   .mobile-drawer-header h3 {
@@ -4446,7 +4453,12 @@ gmp-place-autocomplete::part(prediction-item-nonmatch) {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-height: 0;
   }
+
+  .mobile-drawer-content::-webkit-scrollbar { width: 4px; }
+  .mobile-drawer-content::-webkit-scrollbar-track { background: transparent; }
+  .mobile-drawer-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: var(--radius-pill); }
   
   /* Mobile history drawer list items (re-expand minimized styles) */
   .mobile-history-drawer .sidebar-item-v2 {
