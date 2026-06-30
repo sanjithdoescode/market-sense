@@ -160,8 +160,7 @@ export async function createMarketAnalysis(input, jobId) {
       evidenceWarnings: buildEvidenceWarnings(competitors),
       audienceCacheHit
     },
-    targetId: jobId,
-    userId: input.userId
+    targetId: jobId
   });
 
   onProgress(100, 'Analysis complete!');

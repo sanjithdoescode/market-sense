@@ -2,9 +2,8 @@ import Analysis from '../models/Analysis.js';
 import Competitor from '../models/Competitor.js';
 import Search from '../models/Search.js';
 
-export async function findHistory({ userId, limit = 25 } = {}) {
-  const query = userId ? { userId } : {};
-  return Analysis.find(query)
+export async function findHistory({ limit = 25 } = {}) {
+  return Analysis.find()
     .sort({ createdAt: -1 })
     .limit(limit)
     .populate('search')
