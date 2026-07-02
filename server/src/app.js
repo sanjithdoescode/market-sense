@@ -11,8 +11,11 @@ import configRoutes from './routes/configRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/logger.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
+import { clerkMiddleware } from '@clerk/express';
+import { preventCache } from './middleware/auth.js';
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use(helmet());
 app.use(
@@ -41,7 +44,8 @@ app.use(
       // Disallow other origins (blocks CORS without throwing server-side errors)
       callback(null, false);
     },
-    credentials: true
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
   })
 );
 app.use(express.json({ limit: '1mb' }));
@@ -54,6 +58,8 @@ app.use(async (req, res, next) => {
     next(error);
   }
 });
+app.use('/api', clerkMiddleware());
+app.use('/api', preventCache);
 app.use('/api', apiLimiter);
 
 app.get('/health', (_req, res) => {
