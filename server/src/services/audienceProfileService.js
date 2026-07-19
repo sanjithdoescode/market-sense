@@ -138,10 +138,11 @@ export async function getAudienceProfile(businessType, niche = '') {
   const normalizedNiche = (niche || '').toLowerCase().trim();
 
   // Cache lookup
+  // ⚡ Bolt: Added .lean() to bypass Mongoose hydration for performance gain on this cache check.
   const existing = await AudienceProfile.findOne({
     businessType: normalizedType,
     niche: normalizedNiche
-  }).exec();
+  }).lean().exec();
 
   if (existing) {
     console.info(

@@ -114,5 +114,6 @@ export async function saveAnalysisRecord({
 }
 
 export async function findAnalysisById(id) {
-  return Analysis.findById(id).populate('search').populate('competitors').exec();
+  // ⚡ Bolt: Added .lean() to bypass Mongoose hydration for performance gain on this read-only retrieval.
+  return Analysis.findById(id).populate('search').populate('competitors').lean().exec();
 }

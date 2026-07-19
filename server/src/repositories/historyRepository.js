@@ -6,11 +6,13 @@ export async function findHistory({ clerkId, limit = 25 } = {}) {
   if (!clerkId || typeof clerkId !== 'string' || clerkId.trim() === '') {
     return [];
   }
+  // ⚡ Bolt: Added .lean() to bypass Mongoose hydration, saving memory overhead and execution time for this read-only query.
   return Analysis.find({ clerkId })
     .sort({ createdAt: -1 })
     .limit(limit)
     .populate('search')
     .select('-rawAiResponse')
+    .lean()
     .exec();
 }
 
@@ -23,7 +25,8 @@ export async function findHistoryById(id, clerkId) {
   // Ownership is enforced at the database level: the query only succeeds if
   // the document's clerkId matches. Returns null (→ 404) if the id exists but
   // belongs to another user, preventing data-existence timing attacks.
-  return Analysis.findOne({ _id: id, clerkId }).populate('search').populate('competitors').exec();
+  // ⚡ Bolt: Added .lean() to bypass Mongoose hydration for performance gain on this read-only retrieval.
+  return Analysis.findOne({ _id: id, clerkId }).populate('search').populate('competitors').lean().exec();
 }
 
 
