@@ -1,5 +1,5 @@
 import { Eye, Trash2 } from 'lucide-react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageLoader from '../components/PageLoader.jsx';
@@ -14,13 +14,21 @@ function formatDate(value) {
 
 function History() {
   const { loadHistory, removeHistoryItem, state } = useAnalysis();
+  const [deletingId, setDeletingId] = useState(null);
 
   useEffect(() => {
     loadHistory().catch(() => undefined);
   }, [loadHistory]);
 
   async function handleDelete(id) {
-    await removeHistoryItem(id);
+    if (window.confirm('Are you sure you want to delete this analysis?')) {
+      setDeletingId(id);
+      try {
+        await removeHistoryItem(id);
+      } finally {
+        setDeletingId(null);
+      }
+    }
   }
 
   return (
@@ -64,8 +72,18 @@ function History() {
                   <Link to={`/analysis/${item.id}`} className="icon-button" aria-label={`View ${item.location}`}>
                     <Eye size={16} aria-hidden="true" />
                   </Link>
-                  <button className="icon-button danger" type="button" onClick={() => handleDelete(item.id)}>
-                    <Trash2 size={16} aria-hidden="true" />
+                  <button
+                    className="icon-button danger"
+                    type="button"
+                    onClick={() => handleDelete(item.id)}
+                    aria-label={`Delete ${item.location}`}
+                    disabled={deletingId === item.id}
+                  >
+                    {deletingId === item.id ? (
+                      <span className="spinner" style={{ width: 16, height: 16 }} aria-hidden="true" />
+                    ) : (
+                      <Trash2 size={16} aria-hidden="true" />
+                    )}
                   </button>
                 </div>
               </article>
