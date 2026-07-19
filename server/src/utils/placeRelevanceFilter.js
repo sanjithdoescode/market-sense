@@ -102,7 +102,7 @@ function tokenize(name) {
 }
 
 /**
- * Returns true if nameA and nameB refer to the same institution.
+ * Returns true if parsedA and parsedB refer to the same institution.
  *
  * Matching rules:
  *   1. Exact token-set equality
@@ -110,23 +110,29 @@ function tokenize(name) {
  *   3. One token set is a sub-sequence of the other (handles "UT Austin" vs
  *      "University of Texas at Austin")
  */
-function isSameInstitution(nameA, nameB) {
-  const tokA = tokenize(nameA);
-  const tokB = tokenize(nameB);
+function isSameInstitution(parsedA, parsedB) {
+  const tokA = parsedA.tok;
+  const tokB = parsedB.tok;
 
   if (tokA.length === 0 || tokB.length === 0) return false;
 
+  const strA = parsedA.str;
+  const strB = parsedB.str;
+
   // Exact match
-  if (tokA.join(' ') === tokB.join(' ')) return true;
+  if (strA === strB) return true;
 
   // Common-token check
-  const setA = new Set(tokA);
-  const common = tokB.filter((t) => setA.has(t));
-  if (common.length >= 2) return true;
+  const setA = parsedA.set;
+  let commonCount = 0;
+  for (const t of tokB) {
+    if (setA.has(t)) {
+      commonCount++;
+      if (commonCount >= 2) return true;
+    }
+  }
 
   // Sub-sequence check (one name contains all tokens of the other)
-  const strA = tokA.join(' ');
-  const strB = tokB.join(' ');
   if (tokA.length >= 2 && strB.includes(strA)) return true;
   if (tokB.length >= 2 && strA.includes(strB)) return true;
 
@@ -205,23 +211,37 @@ export function filterAndCluster({
     (a, b) => (a._distanceMeters ?? 999_999) - (b._distanceMeters ?? 999_999)
   );
 
+  // ⚡ Bolt: Pre-tokenize place names to avoid O(N^2) string processing in clustering loop
+  const tokenizedPlaces = withDistance.map((place) => {
+    const tok = tokenize(place.name ?? '');
+    return {
+      place,
+      parsed: {
+        tok,
+        str: tok.join(' '),
+        set: new Set(tok)
+      }
+    };
+  });
+
   // Step 5: Institution-level clustering
   // Keep only the nearest representative when two names map to the same institution
   const clusters = [];
-  for (const place of withDistance) {
+  for (const item of tokenizedPlaces) {
     const alreadyClustered = clusters.some((existing) =>
-      isSameInstitution(existing.name ?? '', place.name ?? '')
+      isSameInstitution(existing.parsed, item.parsed)
     );
 
     if (alreadyClustered) {
       stats.clustered++;
     } else {
-      clusters.push(place);
+      clusters.push(item);
     }
   }
 
   // Step 6: Apply per-category cap on institutions counted
-  const capped = clusters.slice(0, maxInstitutions);
+  const clusteredPlaces = clusters.map((c) => c.place);
+  const capped = clusteredPlaces.slice(0, maxInstitutions);
   stats.validCount = capped.length;
 
   const validInstitutions = capped.map((p) => ({
