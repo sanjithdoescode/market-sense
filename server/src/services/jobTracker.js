@@ -30,7 +30,8 @@ export async function getJob(jobId) {
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
     return null;
   }
-  const job = await Job.findById(jobId);
+  // ⚡ Bolt: Added .lean() to bypass Mongoose hydration, resulting in faster and less memory-intensive lookups.
+  const job = await Job.findById(jobId).lean().exec();
   if (!job) return null;
   return {
     id: job._id.toString(),
