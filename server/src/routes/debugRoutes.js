@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { debugDemand } from '../controllers/debugDemandController.js';
 import { requireAuth } from '../middleware/auth.js';
+import { AppError } from '../utils/AppError.js';
 
 /**
  * Debug routes — for auditing and diagnosing the Demand Signal Engine.
@@ -13,9 +14,16 @@ import { requireAuth } from '../middleware/auth.js';
  */
 const router = Router();
 
+const requireDevEnv = (req, res, next) => {
+  if (process.env.NODE_ENV === 'production') {
+    return next(new AppError(403, 'Debug routes are disabled in production.'));
+  }
+  next();
+};
+
 // POST /api/debug/demand
 // Full demand pipeline diagnostic with raw counts, dedup stats, and score breakdown
-router.post('/demand', debugDemand);
+router.post('/demand', requireAuth, requireDevEnv, debugDemand);
 
 /**
  * GET /api/debug/auth-check
