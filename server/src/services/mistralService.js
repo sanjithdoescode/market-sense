@@ -121,17 +121,21 @@ function normalizeName(value) {
 }
 
 function reconcileCompetitorAssessment(assessment, competitors) {
-  const knownByName = new Map(competitors.map((competitor) => [normalizeName(competitor.name), competitor]));
+  // Bolt: Pre-compute normalized names to avoid O(N*M) string allocations and manipulations in nested loop
+  const normalizedCompetitors = competitors.map((competitor) => ({
+    normalizedName: normalizeName(competitor.name),
+    competitor
+  }));
+  const knownByName = new Map(normalizedCompetitors.map((c) => [c.normalizedName, c.competitor]));
 
   return assessment
     .map((item) => {
       const normalized = normalizeName(item.name);
       const match =
         knownByName.get(normalized) ||
-        competitors.find((competitor) => {
-          const known = normalizeName(competitor.name);
-          return normalized.includes(known) || known.includes(normalized);
-        });
+        normalizedCompetitors.find((c) => {
+          return normalized.includes(c.normalizedName) || c.normalizedName.includes(normalized);
+        })?.competitor;
 
       if (!match) {
         return null;
