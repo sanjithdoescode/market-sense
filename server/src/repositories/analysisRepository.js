@@ -114,5 +114,6 @@ export async function saveAnalysisRecord({
 }
 
 export async function findAnalysisById(id) {
-  return Analysis.findById(id).populate('search').populate('competitors').exec();
+  // ⚡ Bolt: Adding .lean() to read-only queries for reduced memory overhead and faster execution
+  return Analysis.findById(id).populate('search').populate('competitors').lean().exec();
 }
