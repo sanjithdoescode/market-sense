@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useAnalysis } from '../hooks/useAnalysis.js';
 import { sendChatMessage, sendGeneralChatMessage } from '../api/analysisApi.js';
+import DOMPurify from 'dompurify';
 
 function ProviderLogo({ provider, className = 'ai-avatar-img', style }) {
   let src = '/images/mistral.png';
@@ -166,7 +167,7 @@ function MessageContent({ text }) {
       {parts.map((part, i) =>
         part.type === 'chart'
           ? <VisualChart key={i} content={part.content} />
-          : <div key={i} dangerouslySetInnerHTML={{ __html: parseMarkdownToHtml(part.content) }} />
+          : <div key={i} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(parseMarkdownToHtml(part.content)) }} />
       )}
     </div>
   );
