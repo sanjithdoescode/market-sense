@@ -30,7 +30,7 @@ export async function getJob(jobId) {
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
     return null;
   }
-  const job = await Job.findById(jobId);
+  const job = await Job.findById(jobId).lean(); // ⚡ Bolt: Adding .lean() to read-only queries for reduced memory overhead and faster execution
   if (!job) return null;
   return {
     id: job._id.toString(),

@@ -141,7 +141,7 @@ export async function getAudienceProfile(businessType, niche = '') {
   const existing = await AudienceProfile.findOne({
     businessType: normalizedType,
     niche: normalizedNiche
-  }).exec();
+  }).lean().exec(); // ⚡ Bolt: Adding .lean() to read-only queries for reduced memory overhead and faster execution
 
   if (existing) {
     console.info(
