@@ -294,6 +294,7 @@ function CompetitorTable({ competitors = [], assessment = [] }) {
                           rel="noopener noreferrer" 
                           className="action-icon-link" 
                           title="Open in Google Maps"
+                          aria-label="Open in Google Maps"
                         >
                           <MapPin size={15} />
                         </a>
@@ -303,6 +304,7 @@ function CompetitorTable({ competitors = [], assessment = [] }) {
                           rel="noopener noreferrer" 
                           className="action-icon-link" 
                           title="Search Google Reviews"
+                          aria-label="Search Google Reviews"
                         >
                           <MessageSquare size={15} />
                         </a>
@@ -311,6 +313,7 @@ function CompetitorTable({ competitors = [], assessment = [] }) {
                           className="action-icon-btn" 
                           onClick={() => setSelectedCompetitor(competitor)}
                           title="View Details"
+                          aria-label="View Details"
                         >
                           <Eye size={15} />
                         </button>
