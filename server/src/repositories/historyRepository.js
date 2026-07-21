@@ -11,6 +11,7 @@ export async function findHistory({ clerkId, limit = 25 } = {}) {
     .limit(limit)
     .populate('search')
     .select('-rawAiResponse')
+    .lean()
     .exec();
 }
 

@@ -141,7 +141,7 @@ export async function getAudienceProfile(businessType, niche = '') {
   const existing = await AudienceProfile.findOne({
     businessType: normalizedType,
     niche: normalizedNiche
-  }).exec();
+  }).lean().exec();
 
   if (existing) {
     console.info(
