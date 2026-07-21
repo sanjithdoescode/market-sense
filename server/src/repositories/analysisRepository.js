@@ -114,5 +114,10 @@ export async function saveAnalysisRecord({
 }
 
 export async function findAnalysisById(id) {
-  return Analysis.findById(id).populate('search').populate('competitors').exec();
+  return Analysis.findById(id)
+    .populate('search')
+    .populate('competitors')
+    // ⚡ Bolt: Add .lean() to bypass Mongoose hydration for read-only queries, reducing memory and execution time
+    .lean()
+    .exec();
 }
