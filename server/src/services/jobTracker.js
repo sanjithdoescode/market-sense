@@ -30,7 +30,8 @@ export async function getJob(jobId) {
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
     return null;
   }
-  const job = await Job.findById(jobId);
+  // ⚡ Bolt: Adding .lean() to return POJO and skip Mongoose document hydration
+  const job = await Job.findById(jobId).lean();
   if (!job) return null;
   return {
     id: job._id.toString(),
