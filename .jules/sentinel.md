@@ -1,4 +1,9 @@
-## 2024-05-18 - Unauthenticated Debug Route Exposed in Production
-**Vulnerability:** The `/api/debug/demand` route was missing authentication and was accessible in production, allowing unauthorized users to trigger expensive external API calls (DoS and API quota exhaustion).
-**Learning:** Even internal diagnostic or debug endpoints must be strictly protected, especially if they execute expensive backend logic. Furthermore, "debug" or "QA" routes should programmatically enforce environment checks rather than relying purely on comments or documentation.
-**Prevention:** Always add authentication middleware (`requireAuth`) to debug endpoints, and explicitly block them in production using a middleware check (e.g. `process.env.NODE_ENV === 'production'`).
+## 2025-02-27 - [Reflected XSS in Chat Page Markdown Parser]
+**Vulnerability:** The custom markdown parser `parseMarkdownToHtml` does not properly sanitize HTML before rendering it via `dangerouslySetInnerHTML`.
+**Learning:** The simple regexes used for escaping (`&`, `<`, `>`) only run once at the start. However, if markdown syntax itself introduces HTML elements or attributes, they are built *after* the initial replace. A user could craft markdown that interacts unexpectedly with these naive regex replacements to bypass them. It is much safer to use a robust, well-tested sanitization library like DOMPurify whenever rendering raw HTML instead of writing complex custom parsers.
+**Prevention:** Always use a mature library like `dompurify` to sanitize HTML content *just before* it is rendered via `dangerouslySetInnerHTML`, regardless of whether the HTML was generated from a custom markdown parser or an external library. Do not rely on custom regex-based sanitization.
+
+## 2025-02-27 - [Reflected XSS in Chat Page Markdown Parser]
+**Vulnerability:** The custom markdown parser `parseMarkdownToHtml` does not properly sanitize HTML before rendering it via `dangerouslySetInnerHTML`.
+**Learning:** The simple regexes used for escaping (`&`, `<`, `>`) only run once at the start. However, if markdown syntax itself introduces HTML elements or attributes, they are built *after* the initial replace. A user could craft markdown that interacts unexpectedly with these naive regex replacements to bypass them. It is much safer to use a robust, well-tested sanitization library like DOMPurify whenever rendering raw HTML instead of writing complex custom parsers.
+**Prevention:** Always use a mature library like `dompurify` to sanitize HTML content *just before* it is rendered via `dangerouslySetInnerHTML`, regardless of whether the HTML was generated from a custom markdown parser or an external library. Do not rely on custom regex-based sanitization.
