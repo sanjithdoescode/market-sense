@@ -19,8 +19,10 @@ function History() {
     loadHistory().catch(() => undefined);
   }, [loadHistory]);
 
-  async function handleDelete(id) {
-    await removeHistoryItem(id);
+  async function handleDelete(id, location) {
+    if (window.confirm(`Are you sure you want to delete the analysis for ${location}?`)) {
+      await removeHistoryItem(id);
+    }
   }
 
   return (
@@ -64,7 +66,7 @@ function History() {
                   <Link to={`/analysis/${item.id}`} className="icon-button" aria-label={`View ${item.location}`}>
                     <Eye size={16} aria-hidden="true" />
                   </Link>
-                  <button className="icon-button danger" type="button" onClick={() => handleDelete(item.id)}>
+                  <button className="icon-button danger" type="button" onClick={() => handleDelete(item.id, item.location)} aria-label={`Delete analysis for ${item.location}`}>
                     <Trash2 size={16} aria-hidden="true" />
                   </button>
                 </div>
