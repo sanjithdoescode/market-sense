@@ -64,7 +64,7 @@ function History() {
                   <Link to={`/analysis/${item.id}`} className="icon-button" aria-label={`View ${item.location}`}>
                     <Eye size={16} aria-hidden="true" />
                   </Link>
-                  <button className="icon-button danger" type="button" onClick={() => handleDelete(item.id)}>
+                  <button className="icon-button danger" type="button" onClick={() => handleDelete(item.id)} aria-label={`Delete ${item.location} analysis`} title="Delete analysis">
                     <Trash2 size={16} aria-hidden="true" />
                   </button>
                 </div>
