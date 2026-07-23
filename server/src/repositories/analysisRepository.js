@@ -114,5 +114,7 @@ export async function saveAnalysisRecord({
 }
 
 export async function findAnalysisById(id) {
-  return Analysis.findById(id).populate('search').populate('competitors').exec();
+  // ⚡ Bolt: Using .lean() for read-only query to avoid hydration overhead.
+  // The callers either format the response or pass it to prompts, no .save() needed.
+  return Analysis.findById(id).populate('search').populate('competitors').lean().exec();
 }
