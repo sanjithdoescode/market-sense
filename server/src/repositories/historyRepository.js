@@ -11,6 +11,8 @@ export async function findHistory({ clerkId, limit = 25 } = {}) {
     .limit(limit)
     .populate('search')
     .select('-rawAiResponse')
+    // ⚡ Bolt: Adding .lean() to read-only queries improves performance by returning POJOs instead of heavy Mongoose documents
+    .lean()
     .exec();
 }
 
@@ -23,7 +25,8 @@ export async function findHistoryById(id, clerkId) {
   // Ownership is enforced at the database level: the query only succeeds if
   // the document's clerkId matches. Returns null (→ 404) if the id exists but
   // belongs to another user, preventing data-existence timing attacks.
-  return Analysis.findOne({ _id: id, clerkId }).populate('search').populate('competitors').exec();
+  // ⚡ Bolt: Optimizing lookup by appending .lean() to avoid document hydration overhead
+  return Analysis.findOne({ _id: id, clerkId }).populate('search').populate('competitors').lean().exec();
 }
 
 

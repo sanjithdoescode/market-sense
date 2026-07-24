@@ -114,5 +114,6 @@ export async function saveAnalysisRecord({
 }
 
 export async function findAnalysisById(id) {
-  return Analysis.findById(id).populate('search').populate('competitors').exec();
+  // ⚡ Bolt: Using .lean() to bypass document hydration, significantly reducing memory usage for read-only fetch
+  return Analysis.findById(id).populate('search').populate('competitors').lean().exec();
 }
