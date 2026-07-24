@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import DOMPurify from 'dompurify';
 import {
   Plus, Send, Bot, User, Sparkles, AlertCircle, History,
   MessageSquare, ChevronRight, X, Mic, MicOff, StopCircle,
@@ -166,7 +167,7 @@ function MessageContent({ text }) {
       {parts.map((part, i) =>
         part.type === 'chart'
           ? <VisualChart key={i} content={part.content} />
-          : <div key={i} dangerouslySetInnerHTML={{ __html: parseMarkdownToHtml(part.content) }} />
+          : <div key={i} dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(parseMarkdownToHtml(part.content)) }} />
       )}
     </div>
   );
