@@ -30,7 +30,7 @@ export async function getJob(jobId) {
   if (!mongoose.Types.ObjectId.isValid(jobId)) {
     return null;
   }
-  const job = await Job.findById(jobId);
+  const job = await Job.findById(jobId).lean();
   if (!job) return null;
   return {
     id: job._id.toString(),
